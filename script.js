@@ -28,12 +28,17 @@ function passwordDetails() {
         return null;
     }
 
-    if(characterSpecial && characterUpper && characterLower && characterNumber === false) {
+    if(
+        characterSpecial === false &&
+        characterUpper === false &&
+        characterLower === false && 
+        characterNumber === false
+        ) {
         alert("Please select one character type");
         return null;
     }
 
-    //Store values in properties
+    //Store character properties
     var chosenCharacters = {
         length: characterLength,
         special: characterSpecial,
@@ -47,7 +52,57 @@ function passwordDetails() {
 
 }
 
+//Get random character
+function getCharacter(arr) {
+    var randIndex = Math.floor(Math.random() * arr.characterLength);
+    var randElement = arr[randIndex];
+    return randElement;
+}
 
+//Capture user input
+function generatePassword() {
+    var possibleCharacters =[];
+    var guaranteedCharacters = [];
+    var result = [];
+    var selections = passwordDetails();
+
+    if (!options) return null;
+
+    //If/then statements to add toteh arrays
+    if (options.characterSpecial) {
+        possibleCharacters = possibleCharacters.concat(characterSpecial);
+        guaranteedCharacters.push(getCharacter(characterSpecial));
+    }
+
+    if (options.characterUpper) {
+        possibleCharacters = possibleCharacters.concat(characterUpper);
+        guaranteedCharacters.push(getCharacter(characterUpper));
+    }
+
+    if (options.characterLower) {
+        possibleCharacters = possibleCharacters.concat(characterLower);
+        guaranteedCharacters.push(getCharacter(characterLower));
+    }
+
+    if (options.characterNumber) {
+        possibleCharacters = possibleCharacters.concat(characterNumber);
+        guaranteedCharacters.push(getCharacter(characterNumber));
+    }
+
+    //forloop picking all possible characters
+    for (var i = 0; i < selections.characterLength; i++) {
+        var possibleCharacters = getCharacter(possibleCharacters);
+
+        result.push(possibleCharacters);
+    }
+
+    //for loop adding in required characters to guaranteedCharacters array
+    for (var i = 0; i < guaranteedCharacters.characterLength; i++) {
+        result[i] = guaranteedCharacters[i];
+    }
+
+    return result.join('');
+}
 
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
